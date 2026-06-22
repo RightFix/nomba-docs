@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>nomba — unofficial Python SDK for the Nomba API</title>
+<meta name="description" content="A generated, typed Python SDK covering all 64 endpoints of the Nomba payments API, with pagination, a guided card-payment flow, webhook verification, and local request validation.">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<button class="nav-toggle" aria-label="Toggle navigation" aria-controls="sidebar">Menu</button>
+<div class="shell">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">nomba <span class="stamp">PY-SDK</span></div>
+    <div class="brand-sub">unofficial · v0.1.0</div>
+    <nav class="toc">
+      <a href="index.html">Overview</a>
+      <a href="getting-started.html">Getting started</a>
+      <a href="features.html">Advanced features</a>
+      <a href="resources.html">API reference</a>
+      <div class="group-label">Resource groups</div>
+      <a href="resources.html#accounts">Accounts</a>
+      <a href="resources.html#virtual_accounts">Virtual Accounts</a>
+      <a href="resources.html#checkout">Online Checkout</a>
+      <a href="resources.html#charge">Charge</a>
+      <a href="resources.html#transfers">Transfers</a>
+      <a href="resources.html#terminals">Terminals</a>
+      <a href="resources.html#transactions">Transactions</a>
+      <a href="resources.html#airtime_data">Airtime and Data Vending</a>
+      <a href="resources.html#cabletv">CableTV Subscription</a>
+      <a href="resources.html#electricity">Electricity Vending</a>
+      <div class="group-label">More</div>
+      <a href="changelog.html">Changelog</a>
+    </nav>
+  </aside>
+
+  <main>
+    <span class="eyebrow">Unofficial &middot; community-maintained</span>
+    <h1>Every Nomba endpoint, already wired.</h1>
+    <p style="font-size: 1.1rem; max-width: 60ch;">
+      <code>nomba</code> is a Python SDK generated directly from Nomba's own
+      OpenAPI spec — 64 endpoints across 10 resource groups, sync and async,
+      with typed responses and request validation built in. No endpoint URLs
+      to memorize, no manual token handling, no guessing field names.
+    </p>
+
+    <pre><code>pip install nomba
+# or
+uv add nomba</code></pre>
+
+    <pre><code>from nomba import Nomba
+
+nomba = Nomba(
+    client_id="...",
+    client_secret="...",
+    account_id="...",
+    sandbox=True,
+)
+
+account = nomba.virtual_accounts.create_virtual_account(
+    account_ref="ref-123",
+    account_name="Jane Doe",
+)</code></pre>
+
+    <h2>What's covered</h2>
+    <div class="grid">
+      <a href="resources.html">
+        <span class="num">64 endpoints</span>
+        <span class="title">Full API reference</span>
+        <span class="desc">Accounts, Virtual Accounts, Checkout, Charge, Transfers, Terminals, Transactions, Airtime/Data, CableTV, Electricity.</span>
+      </a>
+      <a href="getting-started.html">
+        <span class="num">Sync + async</span>
+        <span class="title">Getting started</span>
+        <span class="desc">Auth, error handling, and the shape of every response.</span>
+      </a>
+      <a href="features.html#pagination">
+        <span class="num">Cursor-based</span>
+        <span class="title">Pagination iterators</span>
+        <span class="desc">Loop over every page of a list endpoint without writing the loop yourself.</span>
+      </a>
+      <a href="features.html#card-payment">
+        <span class="num">3 steps</span>
+        <span class="title">Guided card payment flow</span>
+        <span class="desc">Card details → OTP or 3DS → confirm, decoded into plain booleans.</span>
+      </a>
+      <a href="features.html#webhooks">
+        <span class="num">HMAC-SHA256</span>
+        <span class="title">Webhook verification</span>
+        <span class="desc">Signature check plus replay-window protection on the timestamp.</span>
+      </a>
+      <a href="features.html#reliability">
+        <span class="num">Locked + retried</span>
+        <span class="title">Reliability built in</span>
+        <span class="desc">Token-fetch locking and automatic backoff on 429/5xx responses.</span>
+      </a>
+    </div>
+
+    <h2>Why generated, not hand-written</h2>
+    <p>
+      Every resource method, its required and optional fields, and its
+      response shape come straight from Nomba's published OpenAPI spec — not
+      transcribed by hand. That means field names match exactly
+      (<code>accountRef</code>, not a guess at <code>account_ref</code>),
+      and nested request bodies are checked locally against the same spec
+      before anything goes over the network.
+    </p>
+
+    <div class="callout accent">
+      <span class="label">Scope</span>
+      <p>
+        This SDK is unofficial and not affiliated with Nomba. It wraps
+        Nomba's public API; see
+        <a href="https://developer.nomba.com">developer.nomba.com</a>
+        for the canonical reference and your dashboard credentials.
+      </p>
+    </div>
+
+    <div class="page-foot">
+      <span>nomba · unofficial Python SDK</span>
+      <span><a href="https://pypi.org/project/nomba/">PyPI</a> · <a href="resources.html">API reference</a></span>
+    </div>
+  </main>
+</div>
+<script src="assets/app.js"></script>
+</body>
+</html>

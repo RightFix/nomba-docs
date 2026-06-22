@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Changelog — nomba Python SDK</title>
+<meta name="description" content="Version history for the nomba Python SDK.">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<button class="nav-toggle" aria-label="Toggle navigation" aria-controls="sidebar">Menu</button>
+<div class="shell">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">nomba <span class="stamp">PY-SDK</span></div>
+    <div class="brand-sub">unofficial &middot; v0.1.0</div>
+    <nav class="toc">
+      <a href="index.html">Overview</a>
+      <a href="getting-started.html">Getting started</a>
+      <a href="features.html">Advanced features</a>
+      <a href="resources.html">API reference</a>
+      <div class="group-label">Resource groups</div>
+      <a href="resources.html#accounts">Accounts</a>
+      <a href="resources.html#virtual_accounts">Virtual Accounts</a>
+      <a href="resources.html#checkout">Online Checkout</a>
+      <a href="resources.html#charge">Charge</a>
+      <a href="resources.html#transfers">Transfers</a>
+      <a href="resources.html#terminals">Terminals</a>
+      <a href="resources.html#transactions">Transactions</a>
+      <a href="resources.html#airtime_data">Airtime and Data Vending</a>
+      <a href="resources.html#cabletv">CableTV Subscription</a>
+      <a href="resources.html#electricity">Electricity Vending</a>
+      <div class="group-label">More</div>
+      <a href="changelog.html">Changelog</a>
+    </nav>
+  </aside>
+
+  <main>
+    <span class="eyebrow">Changelog</span>
+    <h1>Version history</h1>
+
+    <h2>0.1.0</h2>
+    <p>Initial release.</p>
+    <ul style="color: var(--ink-dim);">
+      <li>All 64 endpoints from Nomba's OpenAPI spec, generated across 10 resource groups.</li>
+      <li>Sync (<code>Nomba</code>) and async (<code>AsyncNomba</code>) clients.</li>
+      <li>Typed responses via generated <code>TypedDict</code> models.</li>
+      <li>Cursor pagination helpers (<code>paginate</code> / <code>apaginate</code>).</li>
+      <li>Guided card-payment OTP/3DS flow (<code>CardPaymentFlow</code>).</li>
+      <li>Webhook signature verification with replay-window protection.</li>
+      <li>Token-fetch locking and retry-with-backoff on 429/5xx.</li>
+      <li>Local nested request-body validation against the bundled spec.</li>
+      <li>Bounded-concurrency helper for async fan-out calls.</li>
+    </ul>
+
+    <div class="page-foot">
+      <span>nomba · unofficial Python SDK</span>
+      <span><a href="index.html">Overview</a></span>
+    </div>
+  </main>
+</div>
+<script src="assets/app.js"></script>
+</body>
+</html>

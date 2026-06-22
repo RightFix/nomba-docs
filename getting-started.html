@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Getting started — nomba Python SDK</title>
+<meta name="description" content="Install nomba, authenticate, and make your first request — sync and async, with error handling.">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<button class="nav-toggle" aria-label="Toggle navigation" aria-controls="sidebar">Menu</button>
+<div class="shell">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">nomba <span class="stamp">PY-SDK</span></div>
+    <div class="brand-sub">unofficial &middot; v0.1.0</div>
+    <nav class="toc">
+      <a href="index.html">Overview</a>
+      <a href="getting-started.html">Getting started</a>
+      <a href="features.html">Advanced features</a>
+      <a href="resources.html">API reference</a>
+      <div class="group-label">Resource groups</div>
+      <a href="resources.html#accounts">Accounts</a>
+      <a href="resources.html#virtual_accounts">Virtual Accounts</a>
+      <a href="resources.html#checkout">Online Checkout</a>
+      <a href="resources.html#charge">Charge</a>
+      <a href="resources.html#transfers">Transfers</a>
+      <a href="resources.html#terminals">Terminals</a>
+      <a href="resources.html#transactions">Transactions</a>
+      <a href="resources.html#airtime_data">Airtime and Data Vending</a>
+      <a href="resources.html#cabletv">CableTV Subscription</a>
+      <a href="resources.html#electricity">Electricity Vending</a>
+      <div class="group-label">More</div>
+      <a href="changelog.html">Changelog</a>
+    </nav>
+  </aside>
+
+  <main>
+    <span class="eyebrow">Getting started</span>
+    <h1>Install, authenticate, request.</h1>
+    <p>Three things you need from your Nomba dashboard: a <code>client_id</code>, a <code>client_secret</code>, and an <code>account_id</code>. The SDK handles the OAuth2 token exchange for you from there.</p>
+
+    <h2>Install</h2>
+    <pre><code>uv add nomba
+# or
+pip install nomba</code></pre>
+
+    <h2>Sync client</h2>
+    <p>Use <code>Nomba</code> for scripts, CLIs, or synchronous codebases. It opens one HTTP connection pool per instance — create one and reuse it, don't construct a new <code>Nomba()</code> per request.</p>
+    <pre><code>from nomba import Nomba
+
+nomba = Nomba(
+    client_id="...",
+    client_secret="...",
+    account_id="...",
+    sandbox=True,  # set False for live
+)
+
+account = nomba.virtual_accounts.create_virtual_account(
+    account_ref="ref-123",
+    account_name="Jane Doe",
+)
+
+nomba.close()</code></pre>
+
+    <p>Or as a context manager, which closes the connection pool automatically:</p>
+    <pre><code>with Nomba(client_id=..., client_secret=..., account_id=...) as nomba:
+    nomba.virtual_accounts.fetch_a_virtual_account("ref-123")</code></pre>
+
+    <h2>Async client</h2>
+    <p>Every resource is mirrored on <code>AsyncNomba</code>, built on <code>httpx.AsyncClient</code>. Same method names, same field names — just awaited.</p>
+    <pre><code>import asyncio
+from nomba import AsyncNomba
+
+async def main():
+    async with AsyncNomba(
+        client_id="...",
+        client_secret="...",
+        account_id="...",
+        sandbox=True,
+    ) as nomba:
+        transfer = await nomba.transfers.perform_bank_account_transfer_the_parent_account(
+            amount="5000.00",
+            account_number="0123456789",
+            account_name="John Doe",
+            bank_code="058",
+            merchant_tx_ref="txn-001",
+            sender_name="Jane Sender",
+        )
+
+asyncio.run(main())</code></pre>
+
+    <h2>Error handling</h2>
+    <p>All exceptions inherit from <code>NombaError</code>. The two you'll see most:</p>
+    <pre><code>from nomba import NombaAPIError, NombaAuthError, NombaValidationError
+
+try:
+    nomba.virtual_accounts.fetch_a_virtual_account("missing-ref")
+except NombaAuthError as e:
+    print("auth failed:", e)
+except NombaAPIError as e:
+    print("api error:", e.status_code, e.code, e.response_body)
+except NombaValidationError as e:
+    print("bad request, caught locally before any network call:", e)</code></pre>
+
+    <div class="callout">
+      <span class="label">Note</span>
+      <p><code>NombaValidationError</code> is raised <em>before</em> any request goes out — it checks nested required fields (like everything inside an <code>order={...}</code> dict) against Nomba's own spec. See <a href="features.html#validation">request validation</a>.</p>
+    </div>
+
+    <h2>Response shape</h2>
+    <p>Every method returns a plain <code>dict</code> typed as a generated <code>TypedDict</code>, mirroring Nomba's actual JSON keys (camelCase, not snake_case):</p>
+    <pre><code>account = nomba.virtual_accounts.create_virtual_account(
+    account_ref="ref-123",
+    account_name="Jane Doe",
+)
+print(account["data"]["accountNumber"])
+print(account["code"], account["description"])</code></pre>
+
+    <div class="page-foot">
+      <span>nomba · unofficial Python SDK</span>
+      <span><a href="resources.html">API reference</a> · <a href="features.html">Advanced features</a></span>
+    </div>
+  </main>
+</div>
+<script src="assets/app.js"></script>
+</body>
+</html>
