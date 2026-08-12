@@ -41,7 +41,7 @@
 
   <main>
     <span class="eyebrow">API reference</span>
-    <h1>75 endpoints, 14 ledgers.</h1>
+    <h1>87 endpoints, 14 ledgers.</h1>
     <p>
       Every method below is available on both <code>Nomba</code> (sync) and
       <code>AsyncNomba</code> (async, same name, awaited) under the resource
@@ -195,7 +195,7 @@
 
     <section id="checkout">
       <h2>Online Checkout <span style="font-family: var(--font-mono); font-size: .6em; color: var(--ink-faint); font-weight: 400;">nomba.checkout</span></h2>
-      <p>Hosted checkout orders, tokenized cards, saved-card charges. 6 endpoints.</p>
+      <p>Hosted checkout orders, tokenized cards, saved-card charges. 8 endpoints.</p>
       <div class="ledger">
       <div class="ledger-row">
         <span class="method post">POST</span>
@@ -244,6 +244,22 @@
           <span class="fn">.fetch_a_checkout_transaction()</span>
         </div>
         <span class="summary">Fetch checkout transaction</span>
+      </div>
+      <div class="ledger-row">
+        <span class="method post">POST</span>
+        <div>
+          <span class="path">/v1/checkout/refund</span>
+          <span class="fn">.refund_checkout_transaction()</span>
+        </div>
+        <span class="summary">Refund a checkout transaction</span>
+      </div>
+      <div class="ledger-row">
+        <span class="method post">POST</span>
+        <div>
+          <span class="path">/v1/checkout/order/cancel</span>
+          <span class="fn">.cancel_checkout_order()</span>
+        </div>
+        <span class="summary">Cancel a checkout order</span>
       </div>
       </div>
     </section>
