@@ -13,7 +13,7 @@
 
   <aside class="sidebar" id="sidebar">
     <div class="brand">nomba-python <span class="stamp">PY-SDK</span></div>
-    <div class="brand-sub">unofficial &middot; v0.2.0</div>
+    <div class="brand-sub">unofficial &middot; v0.2.1</div>
     <nav class="toc">
       <a href="index.html">Overview</a>
       <a href="getting-started.html">Getting started</a>
@@ -42,6 +42,14 @@
   <main>
     <span class="eyebrow">Changelog</span>
     <h1>Version history</h1>
+
+    <h2>0.2.1</h2>
+    <p>Minor improvements and bug fixes.</p>
+    <ul style="color: var(--ink-dim);">
+      <li>Added warning when sandbox mode is enabled to inform users about disabled SSL verification.</li>
+      <li>Updated token refresh timing (refresh 50 seconds before expiry instead of 60).</li>
+      <li>Cleaned up literal strings in resource modules (removed unnecessary f-string prefixes).</li>
+    </ul>
 
     <h2>0.2.0</h2>
     <p>New resource groups added. Total 87 endpoints across 14 resource groups.</p>
