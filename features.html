@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Advanced features — nomba Python SDK</title>
+<meta name="description" content="Pagination iterators, guided card-payment flow, webhook signature verification with replay protection, bounded concurrency, reliability, and local request validation.">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<button class="nav-toggle" aria-label="Toggle navigation" aria-controls="sidebar">Menu</button>
+<div class="shell">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">nomba <span class="stamp">PY-SDK</span></div>
+    <div class="brand-sub">unofficial &middot; v0.1.0</div>
+    <nav class="toc">
+      <a href="index.html">Overview</a>
+      <a href="getting-started.html">Getting started</a>
+      <a href="features.html">Advanced features</a>
+      <a href="resources.html">API reference</a>
+      <div class="group-label">Resource groups</div>
+      <a href="resources.html#accounts">Accounts</a>
+      <a href="resources.html#virtual_accounts">Virtual Accounts</a>
+      <a href="resources.html#checkout">Online Checkout</a>
+      <a href="resources.html#charge">Charge</a>
+      <a href="resources.html#transfers">Transfers</a>
+      <a href="resources.html#terminals">Terminals</a>
+      <a href="resources.html#transactions">Transactions</a>
+      <a href="resources.html#airtime_data">Airtime and Data Vending</a>
+      <a href="resources.html#cabletv">CableTV Subscription</a>
+      <a href="resources.html#electricity">Electricity Vending</a>
+      <div class="group-label">More</div>
+      <a href="changelog.html">Changelog</a>
+    </nav>
+  </aside>
+
+  <main>
+    <span class="eyebrow">Advanced features</span>
+    <h1>Past raw HTTP calls.</h1>
+    <p>The generated resource methods cover every endpoint, but a few things needed more than a flat method signature. This page covers all of them.</p>
+
+    <section id="pagination">
+      <h2>Pagination</h2>
+      <p>
+        Nomba's list endpoints are cursor-paginated server-side — they
+        return a <code>cursor</code> you feed back in for the next page.
+        <code>paginate</code> / <code>apaginate</code> drive that loop for
+        you; no second pagination scheme is introduced.
+      </p>
+      <pre><code>from nomba import Nomba, paginate
+
+nomba = Nomba(...)
+for account in paginate(nomba.accounts.list_all_accounts, limit=50):
+    print(account["accountRef"])</code></pre>
+      <pre><code>from nomba import AsyncNomba, apaginate
+
+async with AsyncNomba(...) as nomba:
+    async for txn in apaginate(nomba.transactions.fetch_transactions_on_the_parent_account, limit=50):
+        print(txn)</code></pre>
+      <p>Confirmed paginated endpoints: <code>accounts.list_all_accounts</code>, <code>accounts.fetch_terminals_assigned_to_an_account</code>, <code>accounts.fetch_terminals_assigned_to_the_parent_account</code>, <code>virtual_accounts.filter_virtual_accounts</code>, and all six <code>transactions.*</code> list/filter methods.</p>
+    </section>
+
+    <section id="card-payment">
+      <h2>Guided card-payment flow</h2>
+      <p>
+        Card checkout is a multi-step sequence: submit card details, then
+        maybe an OTP, maybe a 3D Secure redirect, then confirm.
+        <code>CardPaymentFlow</code> wraps the sequence and decodes Nomba's
+        response codes into plain booleans, instead of you needing to know
+        what <code>"T0"</code> or <code>"S0"</code> mean.
+      </p>
+      <pre><code>order = nomba.checkout.create_an_online_checkout_order(
+    order={"orderReference": "order-001", "amount": "1000", ...}
+)
+
+flow = nomba.card_payment(order_reference="order-001")
+step = flow.submit_card(card_details="...", key="")
+
+if step.requires_otp:
+    step = flow.submit_otp("123456")
+elif step.requires_3ds:
+    # redirect the user using step.secure_authentication_data
+    ...
+
+if step.completed:
+    result = flow.confirm()</code></pre>
+      <p><code>step</code> is a <code>CardPaymentStep</code> with <code>.completed</code>, <code>.requires_otp</code>, <code>.requires_3ds</code>, <code>.transaction_id</code>, <code>.message</code>. <code>nomba.card_payment(...)</code> returns an <code>AsyncCardPaymentFlow</code> off <code>AsyncNomba</code> too.</p>
+    </section>
+
+    <section id="webhooks">
+      <h2>Webhook signature verification</h2>
+      <p>
+        Implements Nomba's documented HMAC-SHA256 scheme
+        (<code>nomba-signature</code> / <code>nomba-timestamp</code>
+        headers, base64-encoded signature) plus a replay-window check on the
+        timestamp — a valid signature alone doesn't prove a webhook wasn't
+        captured and resent later.
+      </p>
+      <pre><code>from nomba import verify_webhook_request, NombaValidationError
+
+@app.post("/webhooks/nomba")
+def handle_webhook():
+    try:
+        payload = verify_webhook_request(
+            signature_key="...",
+            body=request.get_data(),
+            headers=request.headers,
+            max_age_seconds=300,  # default; reject webhooks older than 5 min
+        )
+    except NombaValidationError:
+        return "invalid signature", 401
+
+    if payload["event_type"] == "payment_success":
+        ...
+    return "", 200</code></pre>
+      <p>Pass <code>max_age_seconds=None</code> to disable the replay check if you have your own.</p>
+    </section>
+
+    <section id="validation">
+      <h2>Local request validation</h2>
+      <p>
+        Flat fields like <code>order_reference=</code> are enforced by
+        Python itself. But nested objects — like <code>order={...}</code>
+        in checkout order creation — have their own required fields a flat
+        signature can't check. Every write call is validated against Nomba's
+        bundled OpenAPI spec before any network call.
+      </p>
+      <pre><code>from nomba import NombaValidationError
+
+try:
+    nomba.checkout.create_an_online_checkout_order(order={"orderReference": "x"})
+except NombaValidationError as e:
+    print(e)
+    # Missing required field(s) in request body: order.amount, order.currency, ...</code></pre>
+    </section>
+
+    <section id="reliability">
+      <h2>Reliability: locking + retry/backoff</h2>
+      <p>
+        <code>NombaClient</code> / <code>AsyncNombaClient</code> guard token
+        fetching with a lock, so concurrent requests never race to re-fetch
+        a token — only one fetch happens, the rest reuse it. Requests that
+        hit a <code>429</code> or transient <code>5xx</code> retry
+        automatically with exponential backoff, respecting
+        <code>Retry-After</code> when Nomba sends one.
+      </p>
+      <pre><code>nomba = Nomba(
+    client_id="...", client_secret="...", account_id="...",
+    max_retries=3,       # default
+    backoff_factor=0.5,  # default; delay ~= backoff_factor * 2^attempt
+)</code></pre>
+    </section>
+
+    <section id="concurrency">
+      <h2>Bounded concurrency for fan-out calls</h2>
+      <p>
+        <code>asyncio.gather</code> has no built-in concurrency limit.
+        Firing off many calls at once can trigger a retry storm if several
+        start failing together, or just trip Nomba's rate limit by bursting
+        too many requests in one window. <code>gather_limited</code> runs
+        the same calls with a cap.
+      </p>
+      <pre><code>from nomba import AsyncNomba, gather_limited
+
+async with AsyncNomba(...) as nomba:
+    calls = [
+        (lambda ref=ref: nomba.virtual_accounts.fetch_a_virtual_account(ref))
+        for ref in account_refs
+    ]
+    results = await gather_limited(calls, limit=5)</code></pre>
+    </section>
+
+    <div class="page-foot">
+      <span>nomba · unofficial Python SDK</span>
+      <span><a href="resources.html">API reference</a> · <a href="getting-started.html">Getting started</a></span>
+    </div>
+  </main>
+</div>
+<script src="assets/app.js"></script>
+</body>
+</html>
