@@ -30,6 +30,10 @@
       <a href="resources.html#airtime_data">Airtime and Data Vending</a>
       <a href="resources.html#cabletv">CableTV Subscription</a>
       <a href="resources.html#electricity">Electricity Vending</a>
+      <a href="resources.html#betting">Betting</a>
+      <a href="resources.html#direct_debits">Direct Debits</a>
+      <a href="resources.html#global_collections">Global Collections</a>
+      <a href="resources.html#global_payout">Global Payout</a>
       <div class="group-label">More</div>
       <a href="changelog.html">Changelog</a>
     </nav>
@@ -37,7 +41,7 @@
 
   <main>
     <span class="eyebrow">API reference</span>
-    <h1>64 endpoints, 10 ledgers.</h1>
+    <h1>75 endpoints, 14 ledgers.</h1>
     <p>
       Every method below is available on both <code>Nomba</code> (sync) and
       <code>AsyncNomba</code> (async, same name, awaited) under the resource
@@ -625,6 +629,202 @@
           <span class="fn">.vend_electricity_via_a_sub_account()</span>
         </div>
         <span class="summary">Vend electricity via a specific account</span>
+      </div>
+      </div>
+    </section>
+
+    <section id="betting">
+      <h2>Betting <span style="font-family: var(--font-mono); font-size: .6em; color: var(--ink-faint); font-weight: 400;">nomba.betting</span></h2>
+      <p>Betting provider lookups and voucher purchases. 4 endpoints.</p>
+      <div class="ledger">
+      <div class="ledger-row">
+        <span class="method get">GET</span>
+        <div>
+          <span class="path">/v1/bill/betting/providers</span>
+          <span class="fn">.fetch_betting_providers()</span>
+        </div>
+        <span class="summary">Fetch betting providers</span>
+      </div>
+      <div class="ledger-row">
+        <span class="method get">GET</span>
+        <div>
+          <span class="path">/v1/bill/betting/lookup</span>
+          <span class="fn">.betting_customer_lookup()</span>
+        </div>
+        <span class="summary">Fetch customer information from a betting provider</span>
+      </div>
+      <div class="ledger-row">
+        <span class="method post">POST</span>
+        <div>
+          <span class="path">/v1/bill/betting</span>
+          <span class="fn">.vend_betting_via_parent_account()</span>
+        </div>
+        <span class="summary">Vend betting via parent account</span>
+      </div>
+      <div class="ledger-row">
+        <span class="method post">POST</span>
+        <div>
+          <span class="path">/v1/bill/betting/{subAccountId}</span>
+          <span class="fn">.vend_betting_via_a_sub_account()</span>
+        </div>
+        <span class="summary">Vend betting via a specific account</span>
+      </div>
+      </div>
+    </section>
+
+    <section id="direct_debits">
+      <h2>Direct Debits <span style="font-family: var(--font-mono); font-size: .6em; color: var(--ink-faint); font-weight: 400;">nomba.direct_debits</span></h2>
+      <p>Direct debit mandate management and collections. 6 endpoints.</p>
+      <div class="ledger">
+      <div class="ledger-row">
+        <span class="method post">POST</span>
+        <div>
+          <span class="path">/v1/direct-debits</span>
+          <span class="fn">.create_a_direct_debit_mandate()</span>
+        </div>
+        <span class="summary">Create a Direct Debit Mandate</span>
+      </div>
+      <div class="ledger-row">
+        <span class="method get">GET</span>
+        <div>
+          <span class="path">/v1/direct-debits/mandates</span>
+          <span class="fn">.get_mandates_by_filters()</span>
+        </div>
+        <span class="summary">Get mandates by filters</span>
+      </div>
+      <div class="ledger-row">
+        <span class="method get">GET</span>
+        <div>
+          <span class="path">/v1/direct-debits/{mandateId}</span>
+          <span class="fn">.get_mandate_by_id()</span>
+        </div>
+        <span class="summary">Get Mandate by ID</span>
+      </div>
+      <div class="ledger-row">
+        <span class="method get">GET</span>
+        <div>
+          <span class="path">/v1/direct-debits/status</span>
+          <span class="fn">.get_mandate_status()</span>
+        </div>
+        <span class="summary">Get Mandate Status</span>
+      </div>
+      <div class="ledger-row">
+        <span class="method put">PUT</span>
+        <div>
+          <span class="path">/v1/direct-debits/update-status</span>
+          <span class="fn">.update_mandate_status()</span>
+        </div>
+        <span class="summary">Update mandate status</span>
+      </div>
+      <div class="ledger-row">
+        <span class="method post">POST</span>
+        <div>
+          <span class="path">/v1/direct-debits/debit-mandate</span>
+          <span class="fn">.debit_a_mandate()</span>
+        </div>
+        <span class="summary">Debit a mandate</span>
+      </div>
+      </div>
+    </section>
+
+    <section id="global_collections">
+      <h2>Global Collections <span style="font-family: var(--font-mono); font-size: .6em; color: var(--ink-faint); font-weight: 400;">nomba.global_collections</span></h2>
+      <p>Mobile money collections and DRC inflow providers. 4 endpoints.</p>
+      <div class="ledger">
+      <div class="ledger-row">
+        <span class="method post">POST</span>
+        <div>
+          <span class="path">/v1/global-collection/inflow/initiate</span>
+          <span class="fn">.initiate_mobile_money_inflow()</span>
+        </div>
+        <span class="summary">Initiate mobile money collection</span>
+      </div>
+      <div class="ledger-row">
+        <span class="method get">GET</span>
+        <div>
+          <span class="path">/v1/global-collection/transactions/{transactionId}</span>
+          <span class="fn">.fetch_collection_transaction()</span>
+        </div>
+        <span class="summary">Retrieve collection transaction status</span>
+      </div>
+      <div class="ledger-row">
+        <span class="method get">GET</span>
+        <div>
+          <span class="path">/v1/global-collection/drc/inflow/providers</span>
+          <span class="fn">.fetch_drc_inflow_providers()</span>
+        </div>
+        <span class="summary">Fetch DRC inflow providers</span>
+      </div>
+      <div class="ledger-row">
+        <span class="method get">GET</span>
+        <div>
+          <span class="path">/v1/sandbox/global-collection/drc/inflow/providers</span>
+          <span class="fn">.fetch_drc_inflow_providers_sandbox()</span>
+        </div>
+        <span class="summary">Fetch DRC inflow providers (sandbox)</span>
+      </div>
+      </div>
+    </section>
+
+    <section id="global_payout">
+      <h2>Global Payout <span style="font-family: var(--font-mono); font-size: .6em; color: var(--ink-faint); font-weight: 400;">nomba.global_payout</span></h2>
+      <p>Cross-border transfers, currency exchange, and payment methods. 7 endpoints.</p>
+      <div class="ledger">
+      <div class="ledger-row">
+        <span class="method post">POST</span>
+        <div>
+          <span class="path">/v1/global-payout/money/convert</span>
+          <span class="fn">.convert_money()</span>
+        </div>
+        <span class="summary">Calculate currency conversion and lock exchange rate</span>
+      </div>
+      <div class="ledger-row">
+        <span class="method get">GET</span>
+        <div>
+          <span class="path">/v1/global-payout/exchange-rates</span>
+          <span class="fn">.fetch_exchange_rates()</span>
+        </div>
+        <span class="summary">Retrieve exchange rates for a currency pair</span>
+      </div>
+      <div class="ledger-row">
+        <span class="method post">POST</span>
+        <div>
+          <span class="path">/v1/global-payout/exchange/authorize</span>
+          <span class="fn">.authorize_exchange()</span>
+        </div>
+        <span class="summary">Authorize currency exchange</span>
+      </div>
+      <div class="ledger-row">
+        <span class="method get">GET</span>
+        <div>
+          <span class="path">/v1/global-payout/payment-methods</span>
+          <span class="fn">.fetch_payment_methods()</span>
+        </div>
+        <span class="summary">Fetch supported payment methods</span>
+      </div>
+      <div class="ledger-row">
+        <span class="method get">GET</span>
+        <div>
+          <span class="path">/v1/global-payout/bank/providers</span>
+          <span class="fn">.list_institution_providers()</span>
+        </div>
+        <span class="summary">List institution providers</span>
+      </div>
+      <div class="ledger-row">
+        <span class="method post">POST</span>
+        <div>
+          <span class="path">/v1/global-payout/transfer/authorize</span>
+          <span class="fn">.authorize_transfer()</span>
+        </div>
+        <span class="summary">Initiate and authorize cross-border transfer</span>
+      </div>
+      <div class="ledger-row">
+        <span class="method get">GET</span>
+        <div>
+          <span class="path">/v1/global-payout/transactions/{transactionId}</span>
+          <span class="fn">.fetch_global_payout_transaction()</span>
+        </div>
+        <span class="summary">Track global payout transaction status</span>
       </div>
       </div>
     </section>
