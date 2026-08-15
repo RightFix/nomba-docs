@@ -13,7 +13,7 @@
 
   <aside class="sidebar" id="sidebar">
     <div class="brand">nomba-python <span class="stamp">PY-SDK</span></div>
-    <div class="brand-sub">unofficial &middot; v0.2.1</div>
+    <div class="brand-sub">unofficial &middot; v0.3.0</div>
     <nav class="toc">
       <a href="index.html">Overview</a>
       <a href="getting-started.html">Getting started</a>
@@ -110,6 +110,11 @@ except NombaValidationError as e:
     <div class="callout">
       <span class="label">Note</span>
       <p><code>NombaValidationError</code> is raised <em>before</em> any request goes out — it checks nested required fields (like everything inside an <code>order={...}</code> dict) against Nomba's own spec. See <a href="features.html#validation">request validation</a>.</p>
+    </div>
+
+    <div class="callout">
+      <span class="label">Tokens</span>
+      <p>The SDK refreshes your OAuth2 token automatically. To actively revoke the current access token, call <code>nomba.revoke_token()</code> (or <code>await nomba.revoke_token()</code> on the async client).</p>
     </div>
 
     <h2>Response shape</h2>

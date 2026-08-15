@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>API reference — nomba-python Python SDK</title>
-<meta name="description" content="All 64 Nomba API endpoints exposed by the nomba-python Python SDK, grouped by resource: Accounts, Virtual Accounts, Checkout, Charge, Transfers, Terminals, Transactions, Airtime/Data, CableTV, Electricity.">
+<meta name="description" content="All 94 Nomba API endpoints exposed by the nomba-python Python SDK, grouped by resource: Accounts, Virtual Accounts, Checkout, Charge, Transfers, Terminals, Transactions, Airtime/Data, CableTV, Electricity, Betting, Direct Debits, Global Collections, Global Payout.">
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
@@ -13,7 +13,7 @@
 
   <aside class="sidebar" id="sidebar">
     <div class="brand">nomba-python <span class="stamp">PY-SDK</span></div>
-    <div class="brand-sub">unofficial &middot; v0.2.1</div>
+    <div class="brand-sub">unofficial &middot; v0.3.0</div>
     <nav class="toc">
       <a href="index.html">Overview</a>
       <a href="getting-started.html">Getting started</a>
@@ -41,7 +41,7 @@
 
   <main>
     <span class="eyebrow">API reference</span>
-    <h1>87 endpoints, 14 ledgers.</h1>
+    <h1>94 endpoints, 14 ledgers.</h1>
     <p>
       Every method below is available on both <code>Nomba</code> (sync) and
       <code>AsyncNomba</code> (async, same name, awaited) under the resource
@@ -53,7 +53,7 @@
 
     <section id="accounts">
       <h2>Accounts <span style="font-family: var(--font-mono); font-size: .6em; color: var(--ink-faint); font-weight: 400;">nomba.accounts</span></h2>
-      <p>Sub-accounts, balances, suspension, and account-level lookups. 11 endpoints.</p>
+      <p>Sub-accounts, balances, suspension, and account-level lookups. 12 endpoints.</p>
       <div class="ledger">
       <div class="ledger-row">
         <span class="method get">GET</span>
@@ -130,6 +130,14 @@
       <div class="ledger-row">
         <span class="method get">GET</span>
         <div>
+          <span class="path">/v1/accounts/{subAccountId}/terminals</span>
+          <span class="fn">.fetch_terminals_assigned_to_a_sub_account()</span>
+        </div>
+        <span class="summary">Fetch terminals assigned to a sub account</span>
+      </div>
+      <div class="ledger-row">
+        <span class="method get">GET</span>
+        <div>
           <span class="path">/v1/accounts/terminals</span>
           <span class="fn">.fetch_terminals_assigned_to_the_parent_account()</span>
         </div>
@@ -148,7 +156,7 @@
 
     <section id="virtual_accounts">
       <h2>Virtual Accounts <span style="font-family: var(--font-mono); font-size: .6em; color: var(--ink-faint); font-weight: 400;">nomba.virtual_accounts</span></h2>
-      <p>Create, fetch, update, and expire dedicated virtual accounts. 5 endpoints.</p>
+      <p>Create, fetch, update, and expire dedicated virtual accounts. 6 endpoints.</p>
       <div class="ledger">
       <div class="ledger-row">
         <span class="method post">POST</span>
@@ -157,6 +165,14 @@
           <span class="fn">.create_virtual_account()</span>
         </div>
         <span class="summary">Create virtual account</span>
+      </div>
+      <div class="ledger-row">
+        <span class="method post">POST</span>
+        <div>
+          <span class="path">/v1/accounts/virtual/{subAccountId}</span>
+          <span class="fn">.create_virtual_account_for_a_sub_account()</span>
+        </div>
+        <span class="summary">Create virtual account for a sub account</span>
       </div>
       <div class="ledger-row">
         <span class="method post">POST</span>
@@ -383,7 +399,7 @@
         <span class="method post">POST</span>
         <div>
           <span class="path">/v1/transfers/bank</span>
-          <span class="fn">.perform_bank_account_transfer_the_parent_account()</span>
+          <span class="fn">.perform_bank_account_transfer_from_the_parent_account()</span>
         </div>
         <span class="summary">Perform bank account transfer from the parent account</span>
       </div>
@@ -416,7 +432,7 @@
 
     <section id="terminals">
       <h2>Terminals <span style="font-family: var(--font-mono); font-size: .6em; color: var(--ink-faint); font-weight: 400;">nomba.terminals</span></h2>
-      <p>Assign and unassign POS terminals to accounts. 4 endpoints.</p>
+      <p>Assign and unassign POS terminals to accounts, and request payments. 5 endpoints.</p>
       <div class="ledger">
       <div class="ledger-row">
         <span class="method post">POST</span>
@@ -449,6 +465,14 @@
           <span class="fn">.un_assign_a_terminal_from_the_parent_account()</span>
         </div>
         <span class="summary">Un-assign a terminal from the parent account</span>
+      </div>
+      <div class="ledger-row">
+        <span class="method post">POST</span>
+        <div>
+          <span class="path">/v1/terminals/payment-request/{terminalId}</span>
+          <span class="fn">.send_payment_request_to_terminal()</span>
+        </div>
+        <span class="summary">Send payment request to terminal</span>
       </div>
       </div>
     </section>
@@ -485,9 +509,9 @@
         <span class="method post">POST</span>
         <div>
           <span class="path">/v1/transactions/accounts/{subAccountId}</span>
-          <span class="fn">.filter_account_transactions()</span>
+          <span class="fn">.filter_sub_account_transactions()</span>
         </div>
-        <span class="summary">Filter account transactions</span>
+        <span class="summary">Filter sub account transactions</span>
       </div>
       <div class="ledger-row">
         <span class="method get">GET</span>
@@ -784,7 +808,7 @@
 
     <section id="global_payout">
       <h2>Global Payout <span style="font-family: var(--font-mono); font-size: .6em; color: var(--ink-faint); font-weight: 400;">nomba.global_payout</span></h2>
-      <p>Cross-border transfers, currency exchange, and payment methods. 7 endpoints.</p>
+      <p>Cross-border transfers, currency exchange, payment methods, and multi-currency account wallets. 11 endpoints.</p>
       <div class="ledger">
       <div class="ledger-row">
         <span class="method post">POST</span>
@@ -841,6 +865,38 @@
           <span class="fn">.fetch_global_payout_transaction()</span>
         </div>
         <span class="summary">Track global payout transaction status</span>
+      </div>
+      <div class="ledger-row">
+        <span class="method get">GET</span>
+        <div>
+          <span class="path">/v1/global-payout/accounts</span>
+          <span class="fn">.fetch_global_payout_accounts()</span>
+        </div>
+        <span class="summary">Retrieve all of your currency wallets and their balances (e.g. CAD, USD) under your parent accountId. Use this to check a non-NGN balance instead of the NGN-only parent account endpoint.</span>
+      </div>
+      <div class="ledger-row">
+        <span class="method get">GET</span>
+        <div>
+          <span class="path">/v1/global-payout/accounts/{accountId}</span>
+          <span class="fn">.fetch_global_payout_account()</span>
+        </div>
+        <span class="summary">Retrieve the details and balance of a single Global Payout account by its account ID.</span>
+      </div>
+      <div class="ledger-row">
+        <span class="method get">GET</span>
+        <div>
+          <span class="path">/v1/sandbox/global-payout/accounts</span>
+          <span class="fn">.fetch_global_payout_accounts_sandbox()</span>
+        </div>
+        <span class="summary">Sandbox version of Fetch Global Payout Accounts. Returns canned multi-currency account data for use in testing.</span>
+      </div>
+      <div class="ledger-row">
+        <span class="method get">GET</span>
+        <div>
+          <span class="path">/v1/sandbox/global-payout/accounts/{accountId}</span>
+          <span class="fn">.fetch_global_payout_account_sandbox()</span>
+        </div>
+        <span class="summary">Sandbox version of Fetch Global Payout Account. Returns canned account details and balance for the given account ID, for use in testing.</span>
       </div>
       </div>
     </section>
