@@ -13,7 +13,7 @@
 
   <aside class="sidebar" id="sidebar">
     <div class="brand">nomba-python <span class="stamp">PY-SDK</span></div>
-    <div class="brand-sub">unofficial &middot; v0.2.1</div>
+    <div class="brand-sub">unofficial &middot; v0.3.0</div>
     <nav class="toc">
       <a href="index.html">Overview</a>
       <a href="getting-started.html">Getting started</a>
@@ -42,6 +42,18 @@
   <main>
     <span class="eyebrow">Changelog</span>
     <h1>Version history</h1>
+
+    <h2>0.3.0</h2>
+    <p>Re-synced the SDK with Nomba's published OpenAPI spec. Total 94 endpoints across 14 resource groups.</p>
+    <ul style="color: var(--ink-dim);">
+      <li>Added the 4 missing <strong>Global Payout</strong> account endpoints: <code>fetch_global_payout_accounts</code>, <code>fetch_global_payout_account</code>, <code>fetch_global_payout_accounts_sandbox</code>, <code>fetch_global_payout_account_sandbox</code>.</li>
+      <li>Added <code>Nomba.revoke_token()</code> / <code>AsyncNomba.revoke_token()</code> to revoke the active access token via <code>POST /v1/auth/token/revoke</code>.</li>
+      <li>Added <code>accounts.fetch_terminals_assigned_to_a_sub_account</code> and <code>virtual_accounts.create_virtual_account_for_a_sub_account</code>.</li>
+      <li>Added <code>terminals.send_payment_request_to_terminal</code>.</li>
+      <li>Renamed <code>transactions.filter_account_transactions</code> &rarr; <code>filter_sub_account_transactions</code> and <code>transfers.perform_bank_account_transfer_the_parent_account</code> &rarr; <code>perform_bank_account_transfer_from_the_parent_account</code>.</li>
+      <li>Breaking signature changes to match the current spec: <code>airtime_data.vend_data_bundles_*</code> now take a required <code>product_id</code> (amount optional); <code>global_payout.authorize_transfer</code>/<code>authorize_exchange</code> dropped <code>auth_code</code>; <code>global_payout.convert_money</code> dropped <code>source_country_iso_code</code>; <code>virtual_accounts.update_a_virtual_account</code> dropped <code>callback_url</code>.</li>
+      <li>Regenerated all resource modules and response models from the bundled spec.</li>
+    </ul>
 
     <h2>0.2.1</h2>
     <p>Minor improvements and bug fixes.</p>
