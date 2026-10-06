@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>API reference — nomba-python Python SDK</title>
-<meta name="description" content="All 94 Nomba API endpoints exposed by the nomba-python Python SDK, grouped by resource: Accounts, Virtual Accounts, Checkout, Charge, Transfers, Terminals, Transactions, Airtime/Data, CableTV, Electricity, Betting, Direct Debits, Global Collections, Global Payout.">
+<meta name="description" content="All 104 Nomba API endpoints exposed by the nomba-python Python SDK, grouped by resource: Accounts, Virtual Accounts, Checkout, Charge, Transfers, Terminals, Transactions, Airtime/Data, CableTV, Electricity, Betting, Direct Debits, Global Collections, Global Payout.">
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
@@ -13,7 +13,7 @@
 
   <aside class="sidebar" id="sidebar">
     <div class="brand">nomba-python <span class="stamp">PY-SDK</span></div>
-    <div class="brand-sub">unofficial &middot; v0.3.0</div>
+    <div class="brand-sub">unofficial &middot; v0.4.0</div>
     <nav class="toc">
       <a href="index.html">Overview</a>
       <a href="getting-started.html">Getting started</a>
@@ -41,7 +41,7 @@
 
   <main>
     <span class="eyebrow">API reference</span>
-    <h1>94 endpoints, 14 ledgers.</h1>
+    <h1>104 endpoints, 14 ledgers.</h1>
     <p>
       Every method below is available on both <code>Nomba</code> (sync) and
       <code>AsyncNomba</code> (async, same name, awaited) under the resource
@@ -130,7 +130,7 @@
       <div class="ledger-row">
         <span class="method get">GET</span>
         <div>
-          <span class="path">/v1/accounts/{subAccountId}/terminals</span>
+          <span class="path">/v1/accounts/{accountId}/terminals</span>
           <span class="fn">.fetch_terminals_assigned_to_a_sub_account()</span>
         </div>
         <span class="summary">Fetch terminals assigned to a sub account</span>
@@ -185,7 +185,7 @@
       <div class="ledger-row">
         <span class="method put">PUT</span>
         <div>
-          <span class="path">/v1/accounts/virtual/{accountRef}</span>
+          <span class="path">/v1/accounts/virtual/{identifier}</span>
           <span class="fn">.update_a_virtual_account()</span>
         </div>
         <span class="summary">Update a virtual account</span>
@@ -193,7 +193,7 @@
       <div class="ledger-row">
         <span class="method get">GET</span>
         <div>
-          <span class="path">/v1/accounts/virtual/{accountRef}</span>
+          <span class="path">/v1/accounts/virtual/{identifier}</span>
           <span class="fn">.fetch_a_virtual_account()</span>
         </div>
         <span class="summary">Fetch a virtual account</span>
@@ -201,7 +201,7 @@
       <div class="ledger-row">
         <span class="method delete">DELETE</span>
         <div>
-          <span class="path">/v1/accounts/virtual/{accountRef}</span>
+          <span class="path">/v1/accounts/virtual/{identifier}</span>
           <span class="fn">.expire_a_virtual_account()</span>
         </div>
         <span class="summary">Expire a virtual account</span>
@@ -251,7 +251,7 @@
           <span class="path">/v1/checkout/tokenized-card-data</span>
           <span class="fn">.delete_tokenized_card_data()</span>
         </div>
-        <span class="summary">Update tokenized card data</span>
+        <span class="summary">Delete tokenized card data</span>
       </div>
       <div class="ledger-row">
         <span class="method get">GET</span>
@@ -398,7 +398,7 @@
       <div class="ledger-row">
         <span class="method post">POST</span>
         <div>
-          <span class="path">/v1/transfers/bank</span>
+          <span class="path">/v2/transfers/bank</span>
           <span class="fn">.perform_bank_account_transfer_from_the_parent_account()</span>
         </div>
         <span class="summary">Perform bank account transfer from the parent account</span>
@@ -406,7 +406,7 @@
       <div class="ledger-row">
         <span class="method post">POST</span>
         <div>
-          <span class="path">/v1/transfers/bank/{subAccountId}</span>
+          <span class="path">/v2/transfers/bank/{subAccountId}</span>
           <span class="fn">.perform_bank_account_transfer_from_account()</span>
         </div>
         <span class="summary">Perform bank account transfer from a sub account</span>
@@ -414,7 +414,7 @@
       <div class="ledger-row">
         <span class="method post">POST</span>
         <div>
-          <span class="path">/v1/transfers/wallet</span>
+          <span class="path">/v2/transfers/wallet</span>
           <span class="fn">.perform_wallet_transfer_from_the_parent_account()</span>
         </div>
         <span class="summary">Perform wallet transfer from the parent account</span>
@@ -422,7 +422,7 @@
       <div class="ledger-row">
         <span class="method post">POST</span>
         <div>
-          <span class="path">/v1/transfers/wallet/{subAccountId}</span>
+          <span class="path">/v2/transfers/wallet/{subAccountId}</span>
           <span class="fn">.perform_wallet_transfer_from_a_sub_account()</span>
         </div>
         <span class="summary">Perform wallet transfer from a sub account</span>
@@ -551,14 +551,14 @@
           <span class="path">/v1/transactions/requery/{sessionId}</span>
           <span class="fn">.confirm_a_transaction_s_status_by_session_id()</span>
         </div>
-        <span class="summary">Fetch a single transaction on the parent account</span>
+        <span class="summary">Confirm a transaction's status by sessionId</span>
       </div>
       </div>
     </section>
 
     <section id="airtime_data">
       <h2>Airtime and Data Vending <span style="font-family: var(--font-mono); font-size: .6em; color: var(--ink-faint); font-weight: 400;">nomba.airtime_data</span></h2>
-      <p>Buy airtime and data bundles across telco networks. 5 endpoints.</p>
+      <p>Buy airtime and data bundles across telco networks. 9 endpoints. Nomba marks the v1 vend endpoints as deprecated in favour of the v2 twins — prefer the <code>_v2</code> methods for new integrations.</p>
       <div class="ledger">
       <div class="ledger-row">
         <span class="method get">GET</span>
@@ -574,6 +574,14 @@
           <span class="path">/v1/bill/topup</span>
           <span class="fn">.make_airtime_purchases_via_parent_account()</span>
         </div>
+        <span class="summary">Make airtime purchases via parent account (deprecated, use v2)</span>
+      </div>
+      <div class="ledger-row">
+        <span class="method post">POST</span>
+        <div>
+          <span class="path">/v2/bill/topup</span>
+          <span class="fn">.make_airtime_purchases_via_parent_account_v2()</span>
+        </div>
         <span class="summary">Make airtime purchases via parent account</span>
       </div>
       <div class="ledger-row">
@@ -582,13 +590,29 @@
           <span class="path">/v1/bill/topup/{subAccountId}</span>
           <span class="fn">.make_airtime_purchases_via_specific_or_sub_account()</span>
         </div>
-        <span class="summary">Make airtime purchases via a sub account</span>
+        <span class="summary">Make airtime purchases via a sub account (deprecated, use v2)</span>
+      </div>
+      <div class="ledger-row">
+        <span class="method post">POST</span>
+        <div>
+          <span class="path">/v2/bill/topup/{subAccountId}</span>
+          <span class="fn">.make_airtime_purchases_via_specific_or_sub_account_v2()</span>
+        </div>
+        <span class="summary">Make airtime purchases via sub account</span>
       </div>
       <div class="ledger-row">
         <span class="method post">POST</span>
         <div>
           <span class="path">/v1/bill/data</span>
           <span class="fn">.vend_data_bundles_via_parent_account()</span>
+        </div>
+        <span class="summary">Vend data bundles via parent account (deprecated, use v2)</span>
+      </div>
+      <div class="ledger-row">
+        <span class="method post">POST</span>
+        <div>
+          <span class="path">/v2/bill/data</span>
+          <span class="fn">.vend_data_bundles_via_parent_account_v2()</span>
         </div>
         <span class="summary">Vend data bundles via parent account</span>
       </div>
@@ -598,14 +622,22 @@
           <span class="path">/v1/bill/data/{subAccountId}</span>
           <span class="fn">.vend_data_bundles_via_specific_or_sub_account()</span>
         </div>
-        <span class="summary">Vend data bundles via a sub account</span>
+        <span class="summary">Vend data bundles via a sub account (deprecated, use v2)</span>
+      </div>
+      <div class="ledger-row">
+        <span class="method post">POST</span>
+        <div>
+          <span class="path">/v2/bill/data/{subAccountId}</span>
+          <span class="fn">.vend_data_bundles_via_specific_or_sub_account_v2()</span>
+        </div>
+        <span class="summary">Vend data bundles via sub account</span>
       </div>
       </div>
     </section>
 
     <section id="cabletv">
       <h2>CableTV Subscription <span style="font-family: var(--font-mono); font-size: .6em; color: var(--ink-faint); font-weight: 400;">nomba.cabletv</span></h2>
-      <p>Cable TV provider lookups and subscription payments. 3 endpoints.</p>
+      <p>Cable TV provider lookups and subscription payments. 5 endpoints. Nomba marks the v1 subscription endpoints as deprecated in favour of the v2 twins.</p>
       <div class="ledger">
       <div class="ledger-row">
         <span class="method get">GET</span>
@@ -621,6 +653,14 @@
           <span class="path">/v1/bill/cabletv</span>
           <span class="fn">.cable_tv_subscription_via_parent_account()</span>
         </div>
+        <span class="summary">CableTv subscription via parent account (deprecated, use v2)</span>
+      </div>
+      <div class="ledger-row">
+        <span class="method post">POST</span>
+        <div>
+          <span class="path">/v2/bill/cabletv</span>
+          <span class="fn">.cable_tv_subscription_via_parent_account_v2()</span>
+        </div>
         <span class="summary">CableTv subscription via parent account</span>
       </div>
       <div class="ledger-row">
@@ -629,14 +669,22 @@
           <span class="path">/v1/bill/cabletv/{subAccountId}</span>
           <span class="fn">.cable_tv_subscription_via_a_sub_account()</span>
         </div>
-        <span class="summary">CableTv subscription via a sub account</span>
+        <span class="summary">CableTv subscription via a sub account (deprecated, use v2)</span>
+      </div>
+      <div class="ledger-row">
+        <span class="method post">POST</span>
+        <div>
+          <span class="path">/v2/bill/cabletv/{subAccountId}</span>
+          <span class="fn">.cable_tv_subscription_via_a_sub_account_v2()</span>
+        </div>
+        <span class="summary">CableTv subscription via sub account</span>
       </div>
       </div>
     </section>
 
     <section id="electricity">
       <h2>Electricity Vending <span style="font-family: var(--font-mono); font-size: .6em; color: var(--ink-faint); font-weight: 400;">nomba.electricity</span></h2>
-      <p>Electricity provider lookups and bill payments. 4 endpoints.</p>
+      <p>Electricity provider lookups and bill payments. 6 endpoints. Nomba marks the v1 vend endpoints as deprecated in favour of the v2 twins.</p>
       <div class="ledger">
       <div class="ledger-row">
         <span class="method get">GET</span>
@@ -660,6 +708,14 @@
           <span class="path">/v1/bill/electricity</span>
           <span class="fn">.vend_electricity_via_parent_account()</span>
         </div>
+        <span class="summary">Vend electricity via parent account (deprecated, use v2)</span>
+      </div>
+      <div class="ledger-row">
+        <span class="method post">POST</span>
+        <div>
+          <span class="path">/v2/bill/electricity</span>
+          <span class="fn">.vend_electricity_via_parent_account_v2()</span>
+        </div>
         <span class="summary">Vend electricity via parent account</span>
       </div>
       <div class="ledger-row">
@@ -668,14 +724,22 @@
           <span class="path">/v1/bill/electricity/{subAccountId}</span>
           <span class="fn">.vend_electricity_via_a_sub_account()</span>
         </div>
-        <span class="summary">Vend electricity via a specific account</span>
+        <span class="summary">Vend electricity via a specific account (deprecated, use v2)</span>
+      </div>
+      <div class="ledger-row">
+        <span class="method post">POST</span>
+        <div>
+          <span class="path">/v2/bill/electricity/{subAccountId}</span>
+          <span class="fn">.vend_electricity_via_a_sub_account_v2()</span>
+        </div>
+        <span class="summary">Vend electricity via sub account</span>
       </div>
       </div>
     </section>
 
     <section id="betting">
       <h2>Betting <span style="font-family: var(--font-mono); font-size: .6em; color: var(--ink-faint); font-weight: 400;">nomba.betting</span></h2>
-      <p>Betting provider lookups and voucher purchases. 4 endpoints.</p>
+      <p>Betting provider lookups and voucher purchases. 6 endpoints. Nomba marks the v1 vend endpoints as deprecated in favour of the v2 twins.</p>
       <div class="ledger">
       <div class="ledger-row">
         <span class="method get">GET</span>
@@ -699,6 +763,14 @@
           <span class="path">/v1/bill/betting</span>
           <span class="fn">.vend_betting_via_parent_account()</span>
         </div>
+        <span class="summary">Vend betting via parent account (deprecated, use v2)</span>
+      </div>
+      <div class="ledger-row">
+        <span class="method post">POST</span>
+        <div>
+          <span class="path">/v2/bill/betting</span>
+          <span class="fn">.vend_betting_via_parent_account_v2()</span>
+        </div>
         <span class="summary">Vend betting via parent account</span>
       </div>
       <div class="ledger-row">
@@ -707,7 +779,15 @@
           <span class="path">/v1/bill/betting/{subAccountId}</span>
           <span class="fn">.vend_betting_via_a_sub_account()</span>
         </div>
-        <span class="summary">Vend betting via a specific account</span>
+        <span class="summary">Vend betting via a specific account (deprecated, use v2)</span>
+      </div>
+      <div class="ledger-row">
+        <span class="method post">POST</span>
+        <div>
+          <span class="path">/v2/bill/betting/{subAccountId}</span>
+          <span class="fn">.vend_betting_via_a_sub_account_v2()</span>
+        </div>
+        <span class="summary">Vend betting via sub account</span>
       </div>
       </div>
     </section>

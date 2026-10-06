@@ -13,7 +13,7 @@
 
   <aside class="sidebar" id="sidebar">
     <div class="brand">nomba-python <span class="stamp">PY-SDK</span></div>
-    <div class="brand-sub">unofficial &middot; v0.3.0</div>
+    <div class="brand-sub">unofficial &middot; v0.4.0</div>
     <nav class="toc">
       <a href="index.html">Overview</a>
       <a href="getting-started.html">Getting started</a>
@@ -83,7 +83,7 @@ async def main():
         account_id="...",
         sandbox=True,
     ) as nomba:
-        transfer = await nomba.transfers.perform_bank_account_transfer_the_parent_account(
+        transfer = await nomba.transfers.perform_bank_account_transfer_from_the_parent_account(
             amount="5000.00",
             account_number="0123456789",
             account_name="John Doe",

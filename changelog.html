@@ -13,7 +13,7 @@
 
   <aside class="sidebar" id="sidebar">
     <div class="brand">nomba-python <span class="stamp">PY-SDK</span></div>
-    <div class="brand-sub">unofficial &middot; v0.3.0</div>
+    <div class="brand-sub">unofficial &middot; v0.4.0</div>
     <nav class="toc">
       <a href="index.html">Overview</a>
       <a href="getting-started.html">Getting started</a>
@@ -42,6 +42,15 @@
   <main>
     <span class="eyebrow">Changelog</span>
     <h1>Version history</h1>
+
+    <h2>0.4.0</h2>
+    <p>Re-synced the SDK with Nomba's live OpenAPI spec. Total 104 endpoints across 14 resource groups.</p>
+    <ul style="color: var(--ink-dim);">
+      <li>Added the 10 new <strong>/v2/bill/...</strong> vend endpoints as <code>*_v2</code> methods: airtime topup + data (+4), betting (+2), cabletv (+2), electricity (+2). Nomba marks the v1 bill-vend endpoints as deprecated — both are kept, prefer <code>*_v2</code> for new integrations.</li>
+      <li>Picked up additive upstream drift in <strong>Global Payout</strong>: optional <code>idempotencyKey</code> on <code>authorize_transfer</code>/<code>authorize_exchange</code>, and <code>destinationCountryIsoCode</code>/<code>destinationCurrency</code> filters on <code>fetch_payment_methods</code>.</li>
+      <li>Hardened the generator against the recurring spec bug where a path declares a <code>{param}</code> placeholder but omits it from parameters (still present for <code>POST /v1/terminals/payment-request/{terminalId}</code>).</li>
+      <li>Packaging: <code>pytest</code>/<code>twine</code> moved to the dev group (runtime is <code>httpx</code> only); fixed deprecated SPDX license identifier so <code>uv run</code>/<code>uv build</code> work.</li>
+    </ul>
 
     <h2>0.3.0</h2>
     <p>Re-synced the SDK with Nomba's published OpenAPI spec. Total 94 endpoints across 14 resource groups.</p>
