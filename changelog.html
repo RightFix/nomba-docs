@@ -13,7 +13,7 @@
 
   <aside class="sidebar" id="sidebar">
     <div class="brand">nomba-python <span class="stamp">PY-SDK</span></div>
-    <div class="brand-sub">unofficial &middot; v0.4.0</div>
+    <div class="brand-sub">unofficial &middot; v0.5.0</div>
     <nav class="toc">
       <a href="index.html">Overview</a>
       <a href="getting-started.html">Getting started</a>
@@ -42,6 +42,14 @@
   <main>
     <span class="eyebrow">Changelog</span>
     <h1>Version history</h1>
+
+    <h2>0.5.0</h2>
+    <p>V2-only bill payments. Total 95 non-deprecated endpoints across 14 resource groups. <strong>Breaking:</strong> all <code>*_v2</code> methods drop the suffix and the 11 deprecated v1 endpoints are removed.</p>
+    <ul style="color: var(--ink-dim);">
+      <li>Removed the 11 deprecated v1 calls (bill-vend <code>topup</code>/<code>data</code>/<code>electricity</code>/<code>cabletv</code>/<code>betting</code> + v1 electricity lookup). The v2 replacements keep the plain names, e.g. <code>vend_data_bundles_via_parent_account</code> → <code>POST /v2/bill/data</code>.</li>
+      <li>Added <code>cabletv.fetch_cable_tv_plans</code> (<code>GET /v1/bill/cableTvProduct</code>) and moved <code>electricity_customer_lookup</code> to <code>GET /v2/bill/electricity/lookup</code>.</li>
+      <li>Generator now skips <code>deprecated: true</code> operations automatically.</li>
+    </ul>
 
     <h2>0.4.0</h2>
     <p>Re-synced the SDK with Nomba's live OpenAPI spec. Total 104 endpoints across 14 resource groups.</p>
